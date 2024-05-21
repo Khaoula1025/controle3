@@ -1,44 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('Layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enroll Student in Course</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
-
-<body>
-    <form action="{{ route('enroll') }}">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <div>
-            <label for="course">Course</label>
-            <select name="course_id" id="courses">
+@section('content')
+<div class="container mt-5">
+    <h1>Enroll Student</h1>
+    <form action="{{ route('enroll', ['id' => $student_id]) }}" method="POST" class="mb-3">
+        @csrf
+        <div class="mb-3">
+            <label for="course" class="form-label">Course</label>
+            <select name="course_id" id="courses" class="form-select">
                 <!-- Options will be populated dynamically -->
             </select>
         </div>
-        <div>
-            <label for="note">Note</label>
-            <input type="number" name="note">
+        <div class="mb-3">
+            <label for="note_exam" class="form-label">Note</label>
+            <input type="number" name="note_exam" class="form-control">
         </div>
-        <div>
-            <label for="date">Date</label>
-            <input type="date" name="exam_date">
+        <div class="mb-3">
+            <label for="date_exam" class="form-label">Date</label>
+            <input type="date" name="date_exam" class="form-control">
         </div>
-        <button type="submit">Attach</button>
+        <button type="submit" class="btn btn-primary">attach</button>
     </form>
+</div>
 
-    <script>
-        $(document).ready(function() {
-            $.get("/api/courses", function(data) {
-                var select = $("#courses");
-                select.empty(); // Remove current options
-                $.each(data.courses, function(key, value) {
-                    select.append("<option value='" + key + "'>" + value + "</option>");
-                });
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $.get("/api/courses", function(data) {
+            var select = $("#courses");
+            select.empty(); // Remove current options
+            $.each(data, function(index, course) {
+                select.append("<option value='" + course.id + "'>" + course.title + "</option>");
             });
+            console.log(data);
         });
-    </script>
-</body>
-
-</html>
+    });
+</script>
+@endsection

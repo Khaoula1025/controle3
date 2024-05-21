@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('course-_students', function (Blueprint $table) {
+        Schema::create('course_student', function (Blueprint $table) {
             $table->id();
             $table->integer('note_exam');
             $table->date('date_exam');
@@ -29,7 +29,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('course-_students', function (Blueprint $table) {
+        Schema::table('course_student', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
     }

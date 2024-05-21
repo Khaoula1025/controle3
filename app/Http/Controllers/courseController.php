@@ -10,11 +10,16 @@ class courseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getCourses()
     {
 
-        $courses = Course::all(); // Fetch all courses from the database
-        return response()->json($courses); // Return the courses as a JSON response
+        return $courses = Course::all(); // Fetch all courses from the database
+
+    }
+    public function index()
+    {
+        $courses = Course::all();
+        return view('courses.index', compact('courses'));
     }
 
     /**
@@ -38,7 +43,8 @@ class courseController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $course = Course::with('students')->findOrFail($id);
+        return view('courses.show', compact('course'));
     }
 
     /**
@@ -63,5 +69,11 @@ class courseController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function students($id)
+    {
+        $course = Course::with('students')->findOrFail($id);
+        $students = $course->students()->withPivot('note', 'date_exam')->get();
+        return view('courses.students', compact('course', 'students'));
     }
 }
